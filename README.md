@@ -145,3 +145,175 @@ Take a look at your browser and notice what the text inside of the button contai
 We'll talk about what role the `{}` syntax has in React in the next section.
 
 ## React Dynamic Props and Data
+
+In the previous section, we used a hard coded prop to display some `text` in our button. In this section we'll discuss and practice using the `{}` syntax to pass variables and other kinds of data to components.
+
+### What role does the `{}`syntax play.
+
+In the previous section, we used `{}` to add something in between our opening and closing `button` tags. The `{}` symbol is something that you may be familiar with from our time with vanilla Javascript.
+
+Let's take a step back and analyze the following code:
+
+```js
+let myName = 'Billy Jean'
+const welcomeMessage = `My name is ${myName} and I was made famous in a song called Billy Jean!`
+
+console.log(welcomeMessage)
+// => Logs: My name is Billy Jean and I was made famous in a song called Billy Jean!
+```
+
+A few questions you may want to ask:
+
+- What role does `${}` play?
+- What can we provide to `${}`?
+- What is the expected result from this code?
+
+Let's take a look at one more example:
+
+```js
+const buttonContainer = document.querySelector('.button-container')
+
+let songTitle = 'Smooth Criminal'
+
+buttonContainer.innerHTML = `<button>Play ${songTitle}</button>`
+```
+
+Again:
+
+- What role does `${}` play?
+- What can we provide to `${}`?
+- What is the expected result from this code?
+
+You can view an example of the output **[HERE](https://codepen.io/anpato/pen/ExvBpmQ)**.
+
+In both of these scenarios, the `${}` syntax came in handy to pass `variables` in to some kind of element or string. Believe it or not, the same applies in the world of React. Specifically the `{}`. This tells the React compiler that some kind of `variable`, `number`, `float` or `boolean` goes in this space.
+
+In the provided `Button.js` example, we had the following code:
+
+```jsx
+import React from 'react'
+
+function Button(props) {
+  console.log(props)
+  return <button>{props.text}</button>
+}
+
+export default Button
+```
+
+We established that `props` was an object containing a `text` property that we provided from `App.js`.
+We are essentially telling the React compiler that some kind of `variable` goes in this element with the `{}` syntax.
+
+Let's try another example.
+
+In your `App.js`, create a variable of `buttonText` with a value of `"Awesome Button"` above the `return` statement:
+
+```jsx
+import './App.css'
+import Button from './components/Button'
+function App() {
+  const buttonText = 'Awesome Button'
+  return (
+    <div>
+      <Button text="Awesome Button" />
+    </div>
+  )
+}
+
+export default App
+```
+
+Next let's substitute the `text` value currently being passed to our `Button` component with the `buttonText` variable. Remember, whenever we pass some kind of `javascript`, we need to use the `{}` syntax:
+
+```js
+import './App.css'
+import Button from './components/Button'
+function App() {
+  const buttonText = 'Awesome Button'
+  return (
+    <div>
+      <Button text={buttonText} />
+    </div>
+  )
+}
+
+export default App
+```
+
+Let's check out our browser and you should see the same text being displayed in our button. During your free time, experiment with the `buttonText` value and observe the changes to your button!
+
+### Passing functions as props
+
+During the beginning of the lesson, we discussed how we could also pass `functions` as props. Let's give that a try.
+
+In your `App.js`, let's define a function called `alertUser` that set's an `alert` with the message of `Button Pressed`:
+
+```jsx
+import './App.css'
+import Button from './components/Button'
+function App() {
+  const buttonText = 'Awesome Button'
+
+  const alertUser = () => {
+    alert('Button Pressed')
+  }
+
+  return (
+    <div>
+      <Button text={buttonText} />
+    </div>
+  )
+}
+
+export default App
+```
+
+Next let's pass this function to our `Button` component with a prop name of `handleClick`:
+
+```jsx
+import './App.css'
+import Button from './components/Button'
+function App() {
+  const buttonText = 'Awesome Button'
+
+  const alertUser = () => {
+    alert('Button Pressed')
+  }
+
+  return (
+    <div>
+      <Button text={buttonText} handleClick={alertUser} />
+    </div>
+  )
+}
+
+export default App
+```
+
+Finally, let's access the `handleClick` prop from `Button.js` and set it to an `onClick` attribute for our button:
+
+```jsx
+import React from 'react'
+
+function Button(props) {
+  console.log(props)
+  return <button onClick={props.handleClick}>{props.text}</button>
+}
+
+export default Button
+```
+
+Give your button a try!
+
+## Recap
+
+In this lesson, we discussed and implemented passing `props` to components. Props can be any kind of information so long as it follows a general set of rules:
+
+- We access `props` with a `props` argument in a component.
+- We can provide a `prop` to an element with the `{}` syntax.
+- Props can be anything in React, even other components!
+
+## Resources
+
+- [React: Components and Props](https://reactjs.org/docs/components-and-props.html)
+- [Props for beginners](https://javascript.plainenglish.io/react-components-and-props-explained-for-non-devs-d801399ed429)
